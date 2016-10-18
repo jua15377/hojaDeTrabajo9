@@ -1,5 +1,3 @@
-import java.util.Stack;
-
 /**
  * Esta clase devuelve un Map en cualquiera de sus dos variedades
  * @author Eric Mendoza 15002
@@ -13,8 +11,12 @@ public class MapFactory {
      * @param map Es el tipo de map que se desea
      * @return Devuelve un map
      */
-    <E> Stack<E> getMap(String map) {
-
+    static <K extends Comparable<K>,V> Map<K,V> getMap(String map) {
+        if (map.equalsIgnoreCase("RedBlack")) {
+            return new MapRedBlackBST<K,V>();
+        } else if (map.equalsIgnoreCase("TwoThree")){
+            return new MapTwoThreeTree<K, V>();
+        }
         return null;
     }
 }
