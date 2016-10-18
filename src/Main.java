@@ -12,7 +12,7 @@ import java.util.*;
  * @version .0
  */
 
-public class MainAnterior {
+public class Main {
     public static void main(String[] args) throws IOException {
         Scanner ingreso = new Scanner(System.in);
         String source = "";
