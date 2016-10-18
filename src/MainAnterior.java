@@ -17,18 +17,13 @@ public class MainAnterior {
         Scanner ingreso = new Scanner(System.in);
         String source = "";
         ArrayList<String> rawDiccionario;
-        rawDiccionario = new ArrayList<>();
+        rawDiccionario = new ArrayList<String>();
         String textoTraducido = "";
         String tipoMapa = "";
 
-        System.out.println("Bienvenido!\nSeleccione el tipo de implemtacion que desea utilizar: \n\t1) RedBlack\n\t2) TwoThree");
-        String opcion = ingreso.nextLine();
-        if (opcion.equals("1")){
-            tipoMapa = "RedBlack";
-        }
-        else  if (opcion.equals("2")) {
-            tipoMapa = "TwoThree";
-        }
+        System.out.println("Bienvenido!\nIngrese el tipo de implementacion que desea utilizar: \n\t1) RedBlack\n\t2) TwoThree");
+        tipoMapa = ingreso.nextLine();
+
 
         Map<String, Association<String, String>> diccionario = MapFactory.getMap(tipoMapa);
 
@@ -66,7 +61,7 @@ public class MainAnterior {
                     /* Ignora los comentarios del archivo de texto */
                     if (temp.charAt(0) != '#') {
                         String[] part = temp.split("\t");
-                        diccionario.put(part[0], new Association<>(part[0], part[1]));
+                        diccionario.put(part[0], new Association<String, String>(part[0], part[1]));
                     }
                 }
             }

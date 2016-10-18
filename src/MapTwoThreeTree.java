@@ -1,5 +1,5 @@
 /**
- * Clase principal,
+ * Clase que prueba la clase de twoThreeTree implementado con la interfaz Map
  * @author Eric Mendoza 15002
  * @author Jonnathan Juarez 15377
  * @since 16/10/2016
