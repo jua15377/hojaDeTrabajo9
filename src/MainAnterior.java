@@ -18,7 +18,7 @@ public class MainAnterior {
         String source = "";
         ArrayList<String> diccionario;
         diccionario = new ArrayList<String>();
-        BinaryTree<String, String> dic  = new BinaryTree<String, String>();
+        MapRedBlackBST<String, String> dic  = new MapRedBlackBST<String, String>();
         String textoTraducido = "";
 
         System.out.println("Bienvenido!\nSeleccione el archivo .TXT que contiene el Diccionario\n(presiona ENTER para continuar)");
@@ -48,7 +48,7 @@ public class MainAnterior {
                 for (int i = 0; i < diccionario.size(); i++) {
                     String temp = diccionario.get(i).substring(1, diccionario.get(i).length() - 1);
                     String[] partes = temp.split(", ");
-                    dic.insert(partes[0],partes[1]);
+                    dic.put(partes[0],partes[1]);
                 }
             } catch (Exception e) {
                 System.out.println("Archivo no valido!!!");
@@ -90,7 +90,7 @@ public class MainAnterior {
             while (st.hasMoreTokens())
             {
                 wIngles = st.nextToken();
-                wEspanol = dic.find(wIngles);
+                wEspanol = dic.get(wIngles);
                 if (wEspanol != null){
                     textoTraducido = (textoTraducido +" "+ wEspanol);
                 }
@@ -110,7 +110,7 @@ public class MainAnterior {
         }
         System.out.println("\nSi la palabra se encuentra entre  asteriscos (**), no existe en el diccionario\n");
         System.out.println("Palabras dentro del diccionario utlizado (inOrder): \n");
-        dic.display(dic.root);
+
 
 
     }
