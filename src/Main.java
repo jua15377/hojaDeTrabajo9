@@ -6,5 +6,7 @@ public class Main {
         String tipoMapa = "";
 
         Map<String, Association<String, String>> diccionario = MapFactory.getMap(tipoMapa);
+        assert diccionario != null;
+        //diccionario.put("run", new Association<String, String>("run", "correr"));
     }
 }
