@@ -16,12 +16,23 @@ public class MainAnterior {
     public static void main(String[] args) throws IOException {
         Scanner ingreso = new Scanner(System.in);
         String source = "";
-        ArrayList<String> diccionario;
-        diccionario = new ArrayList<String>();
-        BinaryTree<String, String> dic  = new BinaryTree<String, String>();
+        ArrayList<String> rawDiccionario;
+        rawDiccionario = new ArrayList<>();
         String textoTraducido = "";
+        String tipoMapa = "";
 
-        System.out.println("Bienvenido!\nSeleccione el archivo .TXT que contiene el Diccionario\n(presiona ENTER para continuar)");
+        System.out.println("Bienvenido!\nSeleccione el tipo de implemtacion que desea utilizar: \n\t1) RedBlack\n\t2) TwoThree");
+        String opcion = ingreso.nextLine();
+        if (opcion.equals("1")){
+            tipoMapa = "RedBlack";
+        }
+        else  if (opcion.equals("2")) {
+            tipoMapa = "TwoThree";
+        }
+
+        Map<String, Association<String, String>> diccionario = MapFactory.getMap(tipoMapa);
+
+        System.out.println("Seleccione el archivo .TXT que contiene el Diccionario\n(presiona ENTER para continuar)");
         ingreso.nextLine();
         /*
          codigo tomado de :
@@ -41,21 +52,30 @@ public class MainAnterior {
 
                 String strLine;
                 while ((strLine = br.readLine()) != null) {
-                    diccionario.add(strLine); //agregar cada linea al diccionario
+                    rawDiccionario.add(strLine); //agregar cada linea al diccionario
                 }
 
                 /* Separar cadenas y hacer asociacion */
-                for (int i = 0; i < diccionario.size(); i++) {
-                    String temp = diccionario.get(i).substring(1, diccionario.get(i).length() - 1);
-                    String[] partes = temp.split(", ");
-                    dic.insert(partes[0],partes[1]);
+                for (int i = 0; i < rawDiccionario.size(); i++) {
+                    /*esta seccion fue realizada con la ayuda de Gabriel Brolo y Jose Custodio*/
+                    String temp = rawDiccionario.get(i);
+                    temp = temp.replaceAll(",", "\t");
+                    temp = temp.replaceAll(", ", "\t");
+                    temp = temp.replaceAll("; ", "\t");
+                    temp = temp.replaceAll(";", "\t");
+                    /* Ignora los comentarios del archivo de texto */
+                    if (temp.charAt(0) != '#') {
+                        String[] part = temp.split("\t");
+                        diccionario.put(part[0], new Association<>(part[0], part[1]));
+                    }
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println("Archivo no valido!!!");
             }
         }
 
-        /*abrir el texto*/
+        /*ABRIR EL TEXTO A TRADUCIR*/
         System.out.println("Seleccione el archivo .TXT que contiene el texto a traducir\n(presiona ENTER para continuar)");
         ingreso.nextLine();
         JFileChooser chooser2 = new JFileChooser(System.getProperty("java.class.path"));
@@ -84,15 +104,15 @@ public class MainAnterior {
             datos.close();  // Se finaliza el lector
             System.out.println("El texto Originas es: \n" + textoATraducir);
             String wIngles, wEspanol;
-            StringTokenizer st = new StringTokenizer (textoATraducir);
+            String[] st = textoATraducir.split(" ");
 
             /* traduce el texto*/
-            while (st.hasMoreTokens())
-            {
-                wIngles = st.nextToken();
-                wEspanol = dic.find(wIngles);
-                if (wEspanol != null){
-                    textoTraducido = (textoTraducido +" "+ wEspanol);
+
+            for (int i =0; i < st.length; i++){
+
+                wIngles = st[i];
+                if (diccionario.get(wIngles) != null){
+                    textoTraducido = (textoTraducido +" "+ diccionario.get(wIngles).getValue());
                 }
                 else{
                     textoTraducido = (textoTraducido + " *"+wIngles+"*");
@@ -109,8 +129,6 @@ public class MainAnterior {
             System.out.println("Archivo no valido!!!");
         }
         System.out.println("\nSi la palabra se encuentra entre  asteriscos (**), no existe en el diccionario\n");
-        System.out.println("Palabras dentro del diccionario utlizado (inOrder): \n");
-        dic.display(dic.root);
 
 
     }
